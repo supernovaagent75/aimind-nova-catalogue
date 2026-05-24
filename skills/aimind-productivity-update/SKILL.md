@@ -1,8 +1,8 @@
 ---
 name: aimind-productivity-update
 description: Weekly retrospective gap-finder — scans the last 7 days of email, calendar, Telegram archives, and Obsidian dailies to surface missed todos, stale tasks, unresolved threads, and memory candidates (new people/projects mentioned but not yet recorded). Outputs a structured gap report. Complements the forward-looking morning briefing.
-version: "0.1.0"
-tier: persona
+tier: installed
+catalog_entry: aimind-productivity-update
 user-invocable: true
 enabled: true
 priority: 3
@@ -29,7 +29,7 @@ personality-mode: warm
 metadata:
   category: productivity
   channel: telegram
-  author: nova
+  author: nova-catalogue
   source_attribution: anthropic/knowledge-work-plugins productivity/update
   triggers:
     - weekly update

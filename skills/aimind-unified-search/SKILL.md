@@ -1,8 +1,8 @@
 ---
 name: aimind-unified-search
 description: Unified cross-source search — decomposes a query, fans out in parallel to Gmail, Calendar, Obsidian vault, semantic memory, and Drive, then synthesizes a single answer with source attribution. Use when Dave asks "did I talk about X recently", "find that doc about Y", "where was the conversation about Z" — questions that require hitting 3+ sources manually.
-version: "0.1.0"
-tier: persona
+tier: installed
+catalog_entry: aimind-unified-search
 user-invocable: true
 enabled: true
 priority: 4
@@ -29,7 +29,7 @@ personality-mode: warm
 metadata:
   category: search
   channel: telegram
-  author: nova
+  author: nova-catalogue
   source_attribution: anthropic/knowledge-work-plugins enterprise-search/search
   triggers:
     - search everything

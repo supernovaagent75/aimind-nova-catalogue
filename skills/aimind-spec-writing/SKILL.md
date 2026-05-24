@@ -1,8 +1,8 @@
 ---
 name: aimind-spec-writing
 description: Structured spec/PRD/brainstorm authoring for Dave's freelance and product work. Takes a vague idea, feature name, or problem statement and produces a scannable PRD with problem, goals, non-goals, user stories, P0/P1/P2 requirements, success metrics, open questions, and timeline considerations. Also supports brainstorm-partner mode for fuzzy early-stage thinking.
-version: "0.1.0"
-tier: persona
+tier: installed
+catalog_entry: aimind-spec-writing
 user-invocable: true
 enabled: true
 priority: 4
@@ -26,7 +26,7 @@ personality-mode: warm
 metadata:
   category: product
   channel: telegram
-  author: nova
+  author: nova-catalogue
   source_attribution: anthropic/knowledge-work-plugins product-management (write-spec, product-brainstorming)
   triggers:
     - write a spec

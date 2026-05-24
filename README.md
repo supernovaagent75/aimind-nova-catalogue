@@ -1,90 +1,126 @@
 # aimind-nova-catalogue
 
-Nova's personal AIMind skill catalogue — a **staging ground** for new skills before they're promoted to the main `aimind` repo or activated in `~/.aimind/`.
+Nova's personal AIMind skill catalogue — installable via `aimind catalog install`.
 
-## Why this exists
+This is a **catalog repo** in the same family as
+[`hiveras/aimind-catalog`](https://github.com/hiveras/aimind-catalog).
+It serves Nova-specific skills that aren't generic enough to belong in the
+platform repo or the org-wide Hiveras catalog, but are still worth distributing
+and versioning rather than living unsourced in `~/.aimind/skills/`.
 
-The AIMind platform repo (`aimind`) holds the canonical platform skills. The instance state directory (`~/.aimind/`) holds the live persona + org skills.
+## What's in it
 
-This repo sits in between: a place where Nova can draft new skills, iterate on them, get Dave's review, and validate them in conversation **before** they go live or get promoted.
+| Entry | Kind | Source plugin | Description |
+|-------|------|---------------|-------------|
+| `aimind-unified-search` | skill | anthropic/knowledge-work-plugins `enterprise-search/search` | Decompose a query, fan out across Gmail / Calendar / Obsidian / memory / Drive, synthesize one answer. |
+| `aimind-productivity-update` | skill | anthropic/knowledge-work-plugins `productivity/update` | Weekly retrospective gap-finder — surfaces missed todos, stale tasks, unrecorded entities. |
+| `aimind-spec-writing` | skill | anthropic/knowledge-work-plugins `product-management/{write-spec,product-brainstorming}` | PRD/spec authoring + brainstorm-partner mode. |
+| `velph-sales` | skill | anthropic/knowledge-work-plugins `sales/*` | Velph client pre-sales: account research, call prep, outreach drafts, competitive intel. |
 
-Think of it as Nova's notebook — sketches that may or may not become production code.
+See [`catalog.json`](./catalog.json) for the canonical manifest.
 
-## Repository structure
+## Install
 
-```
-aimind-nova-catalogue/
-├── README.md                  ← this file
-├── MIGRATION.md               ← promotion checklist + workflow
-└── skills/
-    ├── aimind-unified-search/        SKILL.md
-    ├── aimind-productivity-update/   SKILL.md
-    ├── aimind-spec-writing/          SKILL.md
-    └── velph-sales/                  SKILL.md
-```
+The catalog uses the standard `aimind catalog` CLI shipped with the platform.
 
-## Current catalogue (v0.1.0)
+### One-off — install a single entry
 
-| Skill | Tier | Source plugin | Status |
-|-------|------|---------------|--------|
-| `aimind-unified-search` | persona | anthropic/knowledge-work-plugins `enterprise-search/search` | drafted, awaiting review |
-| `aimind-productivity-update` | persona | anthropic/knowledge-work-plugins `productivity/update --comprehensive` | drafted, awaiting review |
-| `aimind-spec-writing` | persona | anthropic/knowledge-work-plugins `product-management/{write-spec, product-brainstorming}` | drafted, awaiting review |
-| `velph-sales` | org | anthropic/knowledge-work-plugins `sales/{account-research, call-prep, draft-outreach, competitive-intelligence}` | drafted, awaiting review |
-
-## SKILL.md format
-
-All skills here use the canonical AIMind SKILL.md schema:
-
-```yaml
----
-name: <kebab-case-id>
-description: <one paragraph — what + when to trigger>
-version: "<semver>"
-tier: <persona | org | platform>
-user-invocable: true
-enabled: true
-priority: <1-5, higher = more important>
-
-allowed-tools:
-  - Bash
-  - mcp__google__gmail_users_messages_list
-  - ...
-
-personality-mode: <warm | professional>
-
-metadata:
-  category: <search | productivity | product | sales | ...>
-  channel: telegram
-  author: nova
-  source_attribution: <where this was ported from>
-  triggers:
-    - <trigger phrase>
-    - ...
----
-
-# <Skill Name>
-
-<body — markdown instructions for the persona>
+```bash
+aimind catalog install <entry-name> \
+    --catalog https://github.com/thetwit4u/aimind-nova-catalogue
 ```
 
-See `MIGRATION.md` for the full promotion checklist.
+Example:
 
-## Workflow
+```bash
+aimind catalog install aimind-unified-search \
+    --catalog https://github.com/thetwit4u/aimind-nova-catalogue
+```
 
-1. **Draft here.** Author the SKILL.md in this repo. Commit. Push.
-2. **Dave reviews.** Reads the SKILL.md, asks questions, suggests changes.
-3. **Iterate.** Nova edits via task delegation, recommits.
-4. **Activate.** Copy the skill to `~/.aimind/personas/nova/skills/` (persona tier) or `~/.aimind/org/skills/` (org tier). Commit to the instance state repo per `~/.aimind/AGENTS.md`.
-5. **Test in conversation.** Verify triggers fire, tools work, output lands in the right place.
-6. **Promote (optional).** If the skill is generic enough to belong in the platform, open a PR against the main `aimind` repo to move it to `aimind/skills/`.
+This will:
+
+1. Clone the catalog to `~/.aimind/cache/catalogs/nova-catalogue/`.
+2. Resolve the entry's `latest_version` from `catalog.json` (or use `--version YYYY.MM.PATCH` to pin).
+3. Verify `min_platform_version` against this AIMind instance.
+4. Copy `skills/<entry>/` to `~/.aimind/skills/<entry>/`.
+5. Pin the resolved `version:` and `catalog_entry:` into the installed `SKILL.md` frontmatter.
+6. Record the install in `~/.aimind/installed.json`.
+
+The skill becomes discoverable to every persona on this host on the next
+session refresh (tier: `installed` — same discovery scope as a platform skill).
+
+### Make this the default catalog (persistent)
+
+If you want `aimind catalog install <entry>` to use this catalog without
+passing `--catalog` every time:
+
+```bash
+export AIMIND_CATALOG_URL=https://github.com/thetwit4u/aimind-nova-catalogue
+```
+
+(Add to your shell profile; or accept the default of
+`https://github.com/hiveras/aimind-catalog` and use `--catalog` per-install
+for this one.)
+
+### See what's available
+
+```bash
+aimind catalog available --catalog https://github.com/thetwit4u/aimind-nova-catalogue
+```
+
+### Upgrade / uninstall
+
+```bash
+aimind catalog upgrade <entry-name>
+aimind catalog uninstall <entry-name>
+```
+
+## Versioning — CalVer
+
+All entries use CalVer git tags: `<entry-name>@YYYY.MM.PATCH`.
+
+- `YYYY` four-digit year
+- `MM` zero-padded month
+- `PATCH` 1-based integer that **resets to 1 at the start of each new month**
+
+Examples:
+- `aimind-unified-search@2026.05.1`
+- `aimind-spec-writing@2026.05.2`
+
+`aimind catalog upgrade <entry>` pulls the highest CalVer tag for the entry
+declared in `catalog.json#entries[].latest_version`.
+
+## Contributing a new entry
+
+1. Create `skills/<entry-name>/SKILL.md`. Frontmatter MUST include:
+   - `name`, `description`, `tier: installed`, `enabled: true`, `allowed-tools`
+   - `catalog_entry: <entry-name>`
+   - **No** `version:` field (pinned at install time by `aimind catalog install`).
+2. Add the entry to `catalog.json` with `latest_version` and `min_platform_version`.
+3. Commit, then tag the release: `git tag <entry-name>@YYYY.MM.1 && git push --tags`.
+4. Verify the install on a clean instance: `aimind catalog install <entry-name> --catalog <this-repo>`.
+
+See [`AGENTS.md`](./AGENTS.md) for the full contribution rules, neutrality
+guidance, and quality gate.
+
+## Workflow (Nova-internal)
+
+1. **Draft.** Nova drafts a new SKILL.md in this repo (`skills/<name>/`).
+2. **Catalog.** Add the entry to `catalog.json`; commit, tag, push.
+3. **Install.** `aimind catalog install <name> --catalog https://github.com/thetwit4u/aimind-nova-catalogue` on the live instance.
+4. **Test.** Trigger the skill in conversation; verify it does what the SKILL.md promises.
+5. **Iterate.** Edit the source SKILL.md, bump CalVer (`YYYY.MM.PATCH+1`), re-tag, then `aimind catalog upgrade <name>`.
+6. **Promote (optional).** If the skill is generic enough, move it to `hiveras/aimind-catalog` (org-wide) or open a PR against the platform repo (cross-instance).
 
 ## Related repos
 
-- **Platform code:** main `aimind` repo (private) — canonical platform skills live in `aimind/skills/`.
-- **Instance state:** `~/.aimind/` — live persona/org skills, governed by `~/.aimind/AGENTS.md`.
-- **Source inspiration:** [anthropics/knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) — Anthropic's reference plugin catalogue, the seed for v0.1.0 of this repo.
+- **Platform engine:** `hiveras/aimind` (private) — runtime, `aimind catalog` CLI, persona engine.
+- **Org-wide catalog:** [`hiveras/aimind-catalog`](https://github.com/hiveras/aimind-catalog) — reference catalog; same layout as this one.
+- **Instance state:** `~/.aimind/` — live persona/org/installed skills. Governed by `~/.aimind/AGENTS.md`.
+- **Upstream inspiration:** [`anthropics/knowledge-work-plugins`](https://github.com/anthropics/knowledge-work-plugins) — seeded v0.x of these four skills.
 
 ## License
 
-Skills in this repo are derivative work of Anthropic's open-source [knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) (MIT). See each SKILL.md `source_attribution` metadata for specific lineage.
+Skills in this repo are derivative work of Anthropic's open-source
+[knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins) (MIT).
+See each SKILL.md `metadata.source_attribution` for specific lineage.

@@ -1,0 +1,77 @@
+{
+  "schema_version": "1",
+  "catalog": "nova-catalogue",
+  "homepage": "https://github.com/thetwit4u/aimind-nova-catalogue",
+  "entries": [
+    {
+      "name": "aimind-unified-search",
+      "kind": "skill",
+      "skill_path": "skills/aimind-unified-search",
+      "latest_version": "2026.05.1",
+      "min_platform_version": "2026.04.1",
+      "description": "Unified cross-source search — decomposes a query, fans out in parallel to Gmail, Calendar, Obsidian vault, semantic memory, and Drive, then synthesizes a single answer with source attribution.",
+      "tags": [
+        "search",
+        "unified",
+        "research"
+      ],
+      "authors": [
+        "nova",
+        "dave"
+      ]
+    },
+    {
+      "name": "aimind-productivity-update",
+      "kind": "skill",
+      "skill_path": "skills/aimind-productivity-update",
+      "latest_version": "2026.05.1",
+      "min_platform_version": "2026.04.1",
+      "description": "Weekly retrospective gap-finder — scans the last 7 days of email, calendar, Telegram archives, and Obsidian dailies to surface missed todos, stale tasks, unresolved threads, and memory candidates. Complements the forward-looking morning briefing.",
+      "tags": [
+        "productivity",
+        "retrospective",
+        "review"
+      ],
+      "authors": [
+        "nova",
+        "dave"
+      ]
+    },
+    {
+      "name": "aimind-spec-writing",
+      "kind": "skill",
+      "skill_path": "skills/aimind-spec-writing",
+      "latest_version": "2026.05.1",
+      "min_platform_version": "2026.04.1",
+      "description": "Structured spec/PRD/brainstorm authoring. Takes a vague idea, feature name, or problem statement and produces a scannable PRD with problem, goals, non-goals, user stories, P0/P1/P2 requirements, success metrics, open questions, and timeline considerations. Also supports brainstorm-partner mode.",
+      "tags": [
+        "product",
+        "spec",
+        "prd",
+        "brainstorm"
+      ],
+      "authors": [
+        "nova",
+        "dave"
+      ]
+    },
+    {
+      "name": "velph-sales",
+      "kind": "skill",
+      "skill_path": "skills/velph-sales",
+      "latest_version": "2026.05.1",
+      "min_platform_version": "2026.04.1",
+      "description": "Pre-sales workflow for Velph client work — account research, call prep, outreach drafting, and competitive intelligence. Uses web search, Gmail, calendar, and Obsidian as the data layer (no CRM, no enrichment SaaS). Complements aimind-offer for the proposal stage.",
+      "tags": [
+        "sales",
+        "velph",
+        "research",
+        "outreach"
+      ],
+      "authors": [
+        "nova",
+        "dave"
+      ]
+    }
+  ]
+}

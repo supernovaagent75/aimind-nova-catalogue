@@ -1,8 +1,8 @@
 ---
 name: velph-sales
 description: Pre-sales workflow for Velph client work — account research, call prep, outreach drafting, and competitive intelligence. Adapted from Anthropic's sales plugin for Dave's freelance/Velph context (no CRM, no enrichment SaaS — uses web search, Gmail, calendar, Obsidian as the data layer). Complements the existing aimind-offer skill, which handles the proposal stage.
-version: "0.1.0"
-tier: org
+tier: installed
+catalog_entry: velph-sales
 user-invocable: true
 enabled: true
 priority: 4
@@ -30,7 +30,7 @@ personality-mode: warm
 metadata:
   category: sales
   channel: telegram
-  author: nova
+  author: nova-catalogue
   source_attribution: anthropic/knowledge-work-plugins sales (account-research, call-prep, draft-outreach, competitive-intelligence)
   client: velph
   triggers:
